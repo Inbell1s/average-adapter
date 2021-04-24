@@ -1,6 +1,17 @@
 const config = require('dotenv').config();
 
 const API_REF = {
+  huobi: {
+    getUri: (base, quote) => {
+      const api = 'https://api.huobi.pro/market/trade';
+      const url = `${api}?symbol=${base.toLowerCase()}${quote.toLowerCase()}t`;
+
+      return url;
+    },
+    getPath: (base, quote) => {
+      return ['tick', 'data', '0', 'price'];
+    }
+  },
   binance: {
     getUri: (base, quote) => {
       const api = 'https://api.binance.com/api/v1/ticker/price';
@@ -12,7 +23,7 @@ const API_REF = {
       return ['price'];
     }
   },
-  polygon: {
+ polygon: {
     getUri: (base, quote) => {
       const apiKey = process.env.POLYGON_API_KEY;
       const api = 'https://api.polygon.io/v1/last/crypto';
@@ -50,7 +61,9 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    return values.reduce((a, b) => (a + b)) / values.length;
+    const mid = Math.floor(values.length);
+    const nums = [...values].sort((a, b) => a - b);
+    return values.length / nums[mid];
   }
 };
 
