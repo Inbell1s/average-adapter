@@ -23,9 +23,6 @@ const API_REF = {
       return ['price'];
     }
   },
-
-
-
   polygon: {
     getUri: (base, quote) => {
       const apiKey = process.env.POLYGON_API_KEY;
@@ -64,9 +61,9 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    const divide = values.length;
-    const sum = values.reduce((a, b) => a + b, 0);
-    return (sum / divide);
+    const mid = Math.floor(values.length);
+    const nums = [...values].reduce((acc, c) => acc + c, 0);
+    return nums / mid;
   }
 };
 
