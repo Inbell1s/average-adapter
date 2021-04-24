@@ -1,17 +1,6 @@
 const config = require('dotenv').config();
 
 const API_REF = {
-  huobi: {
-    getUri: (base, quote) => {
-      const api = 'https://api.huobi.pro/market/trade';
-      const url = `${api}?symbol=${base.toLowerCase()}${quote.toLowerCase()}t`;
-
-      return url;
-    },
-    getPath: (base, quote) => {
-      return ['tick', 'data', '0', 'price'];
-    }
-  },
   binance: {
     getUri: (base, quote) => {
       const api = 'https://api.binance.com/api/v1/ticker/price';
