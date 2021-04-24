@@ -23,6 +23,18 @@ const API_REF = {
       return ['price'];
     }
   },
+  cryptocompare: {
+    getUri: (base, quote) => {
+      const apiKey = process.env.CRYPTOCOMPARE_API_KEY;
+      const api = 'https://min-api.cryptocompare.com/data/price';
+      const url = `${api}?fsym=${base.toLowerCase()}&tsyms=${quote.toLowerCase()}&api_key=${apiKey}`;
+
+      return url;
+    },
+    getPath: (base, quote) => {
+      return [quote.toUpperCase()];
+    }
+  },
   polygon: {
     getUri: (base, quote) => {
       const apiKey = process.env.POLYGON_API_KEY;
@@ -61,9 +73,8 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    const mid = Math.floor(values.length);
-    const nums = [...values].reduce((acc, c) => acc + c, 0);
-    return nums / mid;
+    const mid = Math.floor(values.length / values.reduce((a, b) => a + b));
+    return mid;
   }
 };
 
