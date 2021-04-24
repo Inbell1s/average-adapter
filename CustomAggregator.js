@@ -50,9 +50,7 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    const mid = Math.floor(values.length / 2);
-    const nums = [...values].sort((a, b) => a - b);
-    return values.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    return values.reduce((a, b) => (a + b)) / values.length;
   }
 };
 
