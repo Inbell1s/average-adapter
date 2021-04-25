@@ -23,18 +23,6 @@ const API_REF = {
       return ['price'];
     }
   },
-  cryptocompare: {
-    getUri: (base, quote) => {
-      const apiKey = process.env.CRYPTOCOMPARE_API_KEY;
-      const api = 'https://min-api.cryptocompare.com/data/price';
-      const url = `${api}?fsym=${base.toLowerCase()}&tsyms=${quote.toLowerCase()}&api_key=${apiKey}`;
-
-      return url;
-    },
-    getPath: (base, quote) => {
-      return [quote.toUpperCase()];
-    }
-  },
   polygon: {
     getUri: (base, quote) => {
       const apiKey = process.env.POLYGON_API_KEY;
@@ -47,19 +35,31 @@ const API_REF = {
       return ['last', 'price'];
     }
   },
-  finage: {
+  coinbase: {
     getUri: (base, quote) => {
-      const apiKey = process.env.FINAGE_API_KEY;
-      const api = 'https://api.finage.co.uk/last/crypto';
-      const url = `${api}/${base.toLowerCase()}${quote.toLowerCase()}?apiKey=${apiKey}`;
+      const api = 'https://api.pro.coinbase.com/products';
+      const url = `${api}/${base.toLowerCase()}-${quote.toLowerCase()}/ticker`;
 
       return url;
     },
     getPath: (base, quote) => {
       return ['price'];
     }
+  },
+  okex: {
+    getUri: (base, quote) => {
+      const api = 'https://www.okex.com/api/margin/v3/instruments';
+      const url = `${api}/${base.toLowerCase()}-${quote.toLowerCase()}T/mark_price`;
+
+      return url;
+    },
+    getPath: (base, quote) => {
+      return ['mark_price'];
+    }
   }
 };
+
+
 
 class CustomAggregator {
   static apiSources = Object.keys(API_REF);
@@ -73,8 +73,9 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    const mid = Math.floor(values.length / values.reduce((a, b) => a + b));
-    return mid;
+    const mid = Math.floor(values.length / 2);
+    const nums = [...values].sort((a, b) => a - b);
+    return values.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
   }
 };
 
