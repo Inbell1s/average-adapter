@@ -6,7 +6,7 @@ WORKDIR /home/node/app
 
 COPY package.json ./
 #COPY yarn.lock ./
-COPY .env ./
+#COPY .env ./
 
 USER node
 
