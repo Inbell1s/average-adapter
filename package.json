@@ -1,8 +1,8 @@
 {
-  "name": "aggregator-adapter",
+  "name": "average-adapter",
   "version": "0.1.0",
   "author": "",
-  "description": "",
+  "description": "Average API Price Adapter.",
   "license": "MIT",
   "scripts": {
     "test": "./node_modules/.bin/_mocha --timeout 0",
