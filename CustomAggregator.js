@@ -23,16 +23,15 @@ const API_REF = {
       return ['price'];
     }
   },
-  polygon: {
+  gateio: {
     getUri: (base, quote) => {
-      const apiKey = process.env.POLYGON_API_KEY;
-      const api = 'https://api.polygon.io/v1/last/crypto';
-      const url = `${api}/${base.toUpperCase()}/${quote.toUpperCase()}?apiKey=${apiKey}`;
+      const api = 'https://api.gateio.ws/api/v4/spot/tickers?currency_pair=';
+      const url = `${api}${base.toUpperCase()}_${quote.toUpperCase()}T`;
 
       return url;
     },
     getPath: (base, quote) => {
-      return ['last', 'price'];
+      return ['0','last'];
     }
   },
   coinbase: {
@@ -56,10 +55,30 @@ const API_REF = {
     getPath: (base, quote) => {
       return ['mark_price'];
     }
+  },
+  ftx: {
+    getUri: (base, quote) => {
+      const api = 'https://ftx.com/api/markets';
+      const url = `${api}/${base.toLowerCase()}/${quote.toLowerCase()}`;
+
+      return url;
+    },
+    getPath: (base, quote) => {
+      return ['result','last'];
+    }
+  },
+  kucoin: {
+    getUri: (base, quote) => {
+      const api = 'https://api.kucoin.com/api/v1/market/orderbook/level1?symbol=';
+      const url = `${api}${base.toUpperCase()}-${quote.toUpperCase()}T`;
+
+      return url;
+    },
+    getPath: (base, quote) => {
+      return ['data','price'];
+    }
   }
 };
-
-
 
 class CustomAggregator {
   static apiSources = Object.keys(API_REF);
@@ -73,9 +92,9 @@ class CustomAggregator {
   };
 
   static getMedian(values) {
-    const mid = Math.floor(values.length / 2);
-    const nums = [...values].sort((a, b) => a - b);
-    return values.length % 2 !== 0 ? nums[mid] : (nums[mid - 1] + nums[mid]) / 2;
+    let sum
+    sum = values.reduce((p, c) => p + c, 0);
+    return values.map((c, i, values) => c / values.length).reduce((p, c) => c + p);
   }
 };
 
