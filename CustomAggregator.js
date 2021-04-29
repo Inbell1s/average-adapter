@@ -94,7 +94,7 @@ class CustomAggregator {
   static getMedian(values) {
     let sum
     sum = values.reduce((p, c) => p + c, 0);
-    return values.map((c, i, values) => c / values.length).reduce((p, c) => c + p);
+    return values.map((c, i, values) => c / values.length).reduce((p, c) => c + p).toFixed(4);
   }
 };
 
